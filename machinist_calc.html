@@ -26,7 +26,9 @@
             border-radius: 5px;
             background-color: white;
             }
-
+    .dropdown{margin: 10px 10px 5px 20px;
+              border-radius: 10px;
+            }
     .calc_box{background: #DEDDDD;
             border:2px solid black;
             border-radius: 10px;
@@ -90,13 +92,38 @@
       <div class = "calc" id = "IPM"></div>
       <br>
       <button class='ipm_button'>calculate IPM</button>
+    </div>
   </div>
+
+  <!-- This section is for HP calulator  -->
+  <div class= 'calc_box'>
+    <p class = 'title_hp'>HP</p>
+    <div class = 'on_hp'>
+      <input class="ipm_hp" value="30.0"></input> Enter IPM <br> <!--change default IPM here-->
+      <input class="rdoc" value="0.050"></input> Enter RDOC <br> <!--change default RDOC here-->
+      <input class="adoc" value="0.500"></input> Enter ADOC <br> <!--change default ADOC here-->
+      <input class="machine_eff" value="75"></input> Enter machine efficiency <br> <!--change default machine efficiency here-->
+      <select class ='dropdown' name = 'k_value' id='k_value'>
+        <option value = '1.88'> 1018 Steel </option>
+        <option value = '1.44'> 4140 Alloy Steel </option>
+        <option value = '1.064'> A2 Tool Steel </option>
+        <option value = '0.633'> 304 Stainless </option>
+        <option value = '3.355'> 6061 AL </option>
+        <option value = '2.0'> 7075 AL </option>
+      </select>
+      <div class = "calc">HP is: </div>
+      <div class = "calc" id = "HP"></div>
+      <br>
+      <button class='hp_button'>calculate HP</button>
+    </div>
   </div>
 
   <script>
     $('.on_sfm').toggle()
     $('.on_rpm').toggle()
     $('.on_ipm').toggle()
+    $('.on_hp').toggle()
+
     $('.sfm_button').click(function(){
       var SFM = document.querySelector('.rpm').value * document.querySelector('.tool_dia').value * Math.PI / 12;
       SFM = Math.round(SFM);
@@ -120,6 +147,15 @@
       document.getElementById('IPM').innerHTML = IPM;
     });
 
+    $('.hp_button').click(function(){
+      var k_val = document.getElementById('k_value').value;
+      var HP = document.querySelector('.ipm_hp').value * document.querySelector('.rdoc').value *
+      document.querySelector('.adoc').value / k_val / (document.querySelector('.machine_eff').value / 100) ;
+      HP = HP.toFixed(2);
+      document.getElementById('HP').innerHTML = HP;
+      //alert(HP);
+    });
+
     $('.title_sfm').click(function(){
       //alert("clicked!");
       $('.on_sfm').toggle('medium')
@@ -131,6 +167,10 @@
     $('.title_ipm').click(function(){
       //alert("clicked!");
       $('.on_ipm').toggle('medium')
+      });
+    $('.title_hp').click(function(){
+      //alert("clicked!");
+      $('.on_hp').toggle('medium')
       });
 
   </script>
