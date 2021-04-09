@@ -7,6 +7,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="new.js"></script>
   <style>
+    body {background: #f0f0f0;
+    font-family: 'Ubuntu', sans-serif;}
+
     h2 {text-align: center;}
     p {text-align: center;
       font-size: 25px;
@@ -44,16 +47,50 @@
             /*margin-bottom: 500px;*/
     }
 
+    /* toggle button stuff */
+    .container {
+      position: absolute;
+      top: 2%;
+      right:2%;
+    }
+    .toggle_button{
+      width:60px;
+      height: 30px;
+      border-radius: 20px;
+      border: 3px solid grey;
+      background-color: white;
+
+    }
+    .inner_circle{
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: black;
+      margin: 1px;
+      transition: all 300ms ease-in-out;
+    }
+    .toggle_button.active {
+      background:black;
+    }
+    .toggle_button.active > .inner_circle{
+      margin-left:30px;
+      background-color: white;
+      transition: all 300ms ease-in-out;
+    }
+
   </style>
 </head>
 
-<style>
-  body {background: #f0f0f0;
-  font-family: 'Ubuntu', sans-serif;}
-</style>
-
 <body>
   <h2>Machinist Calculator</h2>
+
+<!-- Section for toggle switch -->
+  <div class = 'container'>
+    <div class = 'toggle_button' onclick="this.classList.toggle('active'); myFunction()">
+      <div class = 'inner_circle'> </div>
+    </div>
+  </div>
 
   <!-- This section is for SFM calulator  -->
   <div class = 'calc_box'>
@@ -72,7 +109,7 @@
   <div class= 'calc_box'>
     <p class = 'title_rpm'>RPM</p>
     <div class = 'on_rpm'>
-      <input class="sfm" value="334"></input> Enter desired SFM <br> <!--change default SFM here-->
+      <input class="sfm" id='sfm_id' value="334"></input> Enter desired SFM <br> <!--change default SFM here-->
       <input class="tool_dia" value="0.25"></input> Enter tool diameter <br> <!--change default tool diameter here-->
       <div class = "calc">rev per minute is: </div>
       <div class = "calc" id = "RPM"></div>
@@ -86,7 +123,7 @@
     <p class = 'title_ipm'>IPM</p>
     <div class = 'on_ipm'>
       <input class="ipt" value="0.0015"></input> Enter desired IPT <br> <!--change default IPT here-->
-      <input class="rpm_ipm" value="5000"></input> Enter RPM <br> <!--change default RPM here-->
+      <input class="rpm_ipm" id='rpm_ipt_id' value="5000"></input> Enter RPM <br> <!--change default RPM here-->
       <input class="num_flute" value="3"></input> Enter # of flutes <br> <!--change default # of flutes here-->
       <div class = "calc">IPM is: </div>
       <div class = "calc" id = "IPM"></div>
@@ -99,7 +136,7 @@
   <div class= 'calc_box'>
     <p class = 'title_hp'>HP</p>
     <div class = 'on_hp'>
-      <input class="ipm_hp" value="30.0"></input> Enter IPM <br> <!--change default IPM here-->
+      <input class="ipm_hp" id='ipm_hp_id' value="30.0"></input> Enter IPM <br> <!--change default IPM here-->
       <input class="rdoc" value="0.050"></input> Enter RDOC <br> <!--change default RDOC here-->
       <input class="adoc" value="0.500"></input> Enter ADOC <br> <!--change default ADOC here-->
       <input class="machine_eff" value="75"></input> Enter machine efficiency <br> <!--change default machine efficiency here-->
@@ -129,6 +166,7 @@
       SFM = Math.round(SFM);
       SFM = SFM.toString();
       document.getElementById('sfm3').innerHTML = SFM;
+      document.getElementById('sfm_id').value = SFM;
     });
 
     $('.rpm_button').click(function(){
@@ -137,14 +175,15 @@
       RPM = Math.round(RPM);
       RPM = RPM.toString();
       document.getElementById('RPM').innerHTML = RPM;
+      document.getElementById('rpm_ipt_id').value = RPM;
     });
 
     $('.ipm_button').click(function(){
       var IPM = document.querySelector('.ipt').value * document.querySelector('.rpm_ipm').value *
       document.querySelector('.num_flute').value;
       IPM = IPM.toFixed(1);
-
       document.getElementById('IPM').innerHTML = IPM;
+      document.getElementById('ipm_hp_id').value = IPM;
     });
 
     $('.hp_button').click(function(){
@@ -153,6 +192,7 @@
       document.querySelector('.adoc').value / k_val / (document.querySelector('.machine_eff').value / 100) ;
       HP = HP.toFixed(2);
       document.getElementById('HP').innerHTML = HP;
+
       //alert(HP);
     });
 
@@ -172,6 +212,34 @@
       //alert("clicked!");
       $('.on_hp').toggle('medium')
       });
+
+    /* change backgound color toggle switch */
+    /*   document.getElementById('toggle_button_id').onclick = function() {
+      myFunction()
+    }; */
+
+    var test = document.querySelectorAll('.calc_box')
+    let z = 1;
+    let i =0;
+
+    function myFunction(){
+      z = z * -1;
+      /*alert(i); */
+      if (z===1) { //light mode
+        document.body.style.backgroundColor = '#f0f0f0';
+        document.querySelector('h2').style.color = 'black';
+        for (i=0; i<test.length; i++){
+          test[i].style.border = '2px solid black';
+        }
+      }
+      else if (z===-1) { //darkmode
+        document.body.style.backgroundColor = '#465252';
+        document.querySelector('h2').style.color = '#DEDDDD';
+        for (i=0; i<test.length; i++){
+          test[i].style.border = '2px solid #DEDDDD';
+        }
+      }
+    }
 
   </script>
 </body>
